@@ -1,7 +1,7 @@
 ﻿// Программа вывода уникального приветствия для конкретного имени
 Console.WriteLine("Познакомимся?");
 Console.WriteLine("Напишите своё имя: ");
-string username = Console.ReadLine();
+string username = Console.ReadLine ();
 
 if (username.ToLower() == ("маша"))
 {
@@ -9,6 +9,6 @@ if (username.ToLower() == ("маша"))
 }
 else
 {
-  Console.Write("Ну здравствуй, ");
+  Console.Write(" здравствуй, ");
   Console.WriteLine(username.ToUpper());
 }
