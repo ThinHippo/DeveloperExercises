@@ -1,7 +1,7 @@
 ﻿// Программа принимает на вход три числа и выдаёт максимальное из этих чисел.
 Console.Clear();
 int index = 0;
-int size = 3;
+int size = 3;//изменить значение переменной для другого количества сравниваемых чисел
 double maxvalue = 0;
 double[] numbers = new double[size];
 
