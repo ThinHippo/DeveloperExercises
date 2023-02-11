@@ -7,9 +7,9 @@ Console.Write(num);
 
 if (num % 2 == 0)
 {
-  Console.WriteLine(" -> да");
+  Console.WriteLine(" -> чётное");
 }
 else
 {
-  Console.WriteLine(" -> нет");
+  Console.WriteLine(" -> нечётное");
 }
