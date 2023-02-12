@@ -1,11 +1,16 @@
-﻿// Программа принимает на вход три числа и выдаёт максимальное из этих чисел.
+﻿// Программа принимает на вход (три) числа и выдаёт максимальное из них.
 Console.Clear();
-int index = 0;
-int size = 3;//изменить значение переменной для другого количества сравниваемых чисел
-double maxvalue = 0;
+
+int size; //= 3 (по условию задачи). По совету Дмитрия Тихонова всё-же сделаю чуть универсальнее
+Console.Write("Введите количество чисел для сравнения: ");
+size = int.Parse(Console.ReadLine());
+
+double maxValue = 0;
 double[] numbers = new double[size];
 
-Console.WriteLine("Введите последовательно три числа:");
+int index = 0;
+
+Console.WriteLine("Введите последовательно числа для сравнения:");
 
 for (index = 0; index < numbers.Length; index++)
 {
@@ -13,13 +18,13 @@ for (index = 0; index < numbers.Length; index++)
 
   if (index == 0)
   {
-    maxvalue = numbers[index];
+    maxValue = numbers[index];
   }
-  if (numbers[index] > maxvalue)
+  if (numbers[index] > maxValue)
   {
-    maxvalue = numbers[index];
+    maxValue = numbers[index];
   }
 
 }
 Console.Write("Максимальное число: ");
-Console.WriteLine(maxvalue);
+Console.WriteLine(maxValue);
