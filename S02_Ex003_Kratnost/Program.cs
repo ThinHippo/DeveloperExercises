@@ -3,13 +3,13 @@
 Console.Clear();
 
 void CheckKratnost (int a, int b) {
-if (bNum % aNum == 0)
+if (b % a == 0)
 {
   Console.WriteLine("да");
 }
 else {
   Console.Write("Нет, остаток ");
-  Console.WriteLine(bNum % aNum);
+  Console.WriteLine(b % a);
 }
 }
 
