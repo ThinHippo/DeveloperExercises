@@ -1,4 +1,4 @@
-public class HomeMethod
+public class SecondDuelMethod
 {
   public static int DigitInPosition(long num, int position)
   {

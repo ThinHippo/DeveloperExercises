@@ -1,5 +1,5 @@
 ﻿// Домашнее задание после второго семинара по основам C#
-using static HomeMethod;
+using static SecondDuelMethod;
 
 void RunTask(int task)
 {
