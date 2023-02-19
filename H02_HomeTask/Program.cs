@@ -48,7 +48,7 @@ void RunTask(int task)
     case 15://решение 15 задачи
       {
         Console.WriteLine(about[2]);
-        Console.Write("Укажите, какой сегодня день недели по счёту: ");
+        Console.Write("Укажите, какой сегодня день недели по счёту (1-7): ");
         int numDay = int.Parse(Console.ReadLine());
         if (WeekdayNumInRange(numDay) == true)
         {
@@ -63,7 +63,7 @@ void RunTask(int task)
         }
         else
         {
-          Console.WriteLine("В наших краях неделя состоит из семи дней...");
+          Console.WriteLine("В наших краях неделя состоит из семи дней (1-7)...");
         }
         break;
       }
@@ -82,10 +82,3 @@ else
 {
   Console.WriteLine("Пока задачи " + exNum + " нет в списке решённых. Возможно получится выбрать в следующий раз...");
 }
-
-
-
-
-
-
-
