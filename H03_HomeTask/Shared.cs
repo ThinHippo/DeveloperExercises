@@ -3,8 +3,6 @@ public class ThirdDuelMethod
   public static void NumIsPalindrom(long num, int way)
   {
     bool proof = false;
-    double duration = 0.0;
-    double start = Convert.ToDouble(DateTime.Now);
 
     if (num < 0)
     {
@@ -14,66 +12,37 @@ public class ThirdDuelMethod
     {
       proof = true;
     }
-    if (way > 0 && way <= 4)
+    if (way > -1 && way <= 4)
     {
       switch (way)
       {
         case 0:
           {
-            start = Convert.ToDouble(DateTime.Now);
-            proof = WereWolf(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод WereWolf выполнен за " + duration + " секунд)");
-            //
-            start = Convert.ToDouble(DateTime.Now);
-            proof = Mirror(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод Mirror выполнен за " + duration + " секунд)");
-            //
-            start = Convert.ToDouble(DateTime.Now);
-            proof = ChineseReader(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод ChineseReader выполнен за " + duration + " секунд)");
-            //
-            start = Convert.ToDouble(DateTime.Now);
-            proof = ReturnFire(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод ReturnFire выполнен за " + duration + " секунд)");
+            PalindromSpeed();
             break;
           }
         case 1:
           {
-            start = Convert.ToDouble(DateTime.Now);
             proof = WereWolf(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод WereWolf выполнен за " + duration + " секунд)");
             break;
           }
         case 2:
           {
-            start = Convert.ToDouble(DateTime.Now);
             proof = Mirror(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод Mirror выполнен за " + duration + " секунд)");
             break;
           }
         case 3:
           {
-            start = Convert.ToDouble(DateTime.Now);
             proof = ChineseReader(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод ChineseReader выполнен за " + duration + " секунд)");
             break;
           }
         case 4:
           {
-            start = Convert.ToDouble(DateTime.Now);
             proof = ReturnFire(num);
-            duration = Convert.ToDouble(DateTime.Now) - start;
-            Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (Метод ReturnFire выполнен за " + duration + " секунд)");
             break;
           }
       }
+      if (way > 0) Console.WriteLine("Число " + num + " палиндром? -> " + proof + " (использован " + way + "-й метод)");
     }
     else
     {
@@ -89,7 +58,7 @@ public class ThirdDuelMethod
     double y;
     double z;
     string txtL, txtR;
-    Console.WriteLine("Таблица расстояний");
+    Console.WriteLine("Таблица расстояний (D)");
     for (int index = 0; index < point; index++)
     {
       for (int item = index + 1; item < point; item++)
@@ -100,7 +69,7 @@ public class ThirdDuelMethod
         distance = Math.Sqrt(x + y + z);
         txtL = "A" + index + "(" + coordinates[index, 0] + ", " + coordinates[index, 1] + ", " + coordinates[index, 2] + ")";
         txtR = "A" + item + "(" + coordinates[item, 0] + ", " + coordinates[item, 1] + ", " + coordinates[item, 2] + ")";
-        Console.WriteLine("Расстояние между " + txtL + " и " + txtR + " равно " + distance);
+        Console.WriteLine("D (" + txtL + " -> " + txtR + ") = " + distance);
       }
     }
   }
@@ -214,5 +183,46 @@ public class ThirdDuelMethod
       }
     }
     return false;
+  }
+  public static void PalindromSpeed(int limit = 1500000)
+  {
+    DateTime start;
+    int loop;
+    start = DateTime.Now;
+    int trueResult = 0;
+    for (loop = 1; loop <= limit; loop++)
+    {
+      if (WereWolf(loop) == true) trueResult++;
+    }
+
+    Console.Write("Найдено " + trueResult + " чисел-палиндромов.\n Время выполнения " + limit + " итераций метода Оборотень: ");
+    Console.WriteLine(DateTime.Now - start);
+    //
+    start = DateTime.Now;
+    trueResult = 0;
+    for (loop = 1; loop <= limit; loop++)
+    {
+      if (Mirror(loop) == true) trueResult++;
+    }
+    Console.Write("Найдено " + trueResult + " чисел-палиндромов.\n Время выполнения " + limit + " итераций метода Зеркало: ");
+    Console.WriteLine(DateTime.Now - start);
+    //
+    start = DateTime.Now;
+    trueResult = 0;
+    for (loop = 1; loop <= limit; loop++)
+    {
+      if (ChineseReader(loop) == true) trueResult++;
+    }
+    Console.Write("Найдено " + trueResult + " чисел-палиндромов.\n Время выполнения " + limit + " итераций метода Китайский чтец: ");
+    Console.WriteLine(DateTime.Now - start);
+    //
+    start = DateTime.Now;
+    trueResult = 0;
+    for (loop = 1; loop <= limit; loop++)
+    {
+      if (ReturnFire(loop) == true) trueResult++;
+    }
+    Console.Write("Найдено " + trueResult + " чисел-палиндромов.\n Время выполнения " + limit + " итераций метода Ответный огонь: ");
+    Console.WriteLine(DateTime.Now - start);
   }
 }

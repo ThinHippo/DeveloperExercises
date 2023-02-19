@@ -15,7 +15,7 @@ void RunTask(int task)
         Console.Write("Введите число (по условию задачи пятизначное): ");
         long num19 = long.Parse(Console.ReadLine());
         Console.WriteLine("Эта задача решена несколькими способами: \n 1. Оборотень \n 2. Зеркало \n 3. Китайский чтец \n 4. Ответный огонь");
-        Console.Write("Выберите номер способа решения (0 - попробовать всё): ");
+        Console.Write("Выберите номер способа решения (0 - сравнить производительность): ");
         int how = int.Parse(Console.ReadLine());
         NumIsPalindrom(num19, how);
         break;
@@ -37,8 +37,8 @@ void RunTask(int task)
         break;
       }
   }
-
-  //вызов процедуры
+}
+  //вызов процедуры RunTask
   Console.Clear();
   Console.WriteLine("Практическое задание - решить задачи 19, 21, 23.");
   Console.Write("Выберите номер задачи: ");
@@ -51,4 +51,3 @@ void RunTask(int task)
   {
     Console.WriteLine("Пока задачи " + exNum + " нет в списке решённых. Возможно получится выбрать в следующий раз...");
   }
-}
