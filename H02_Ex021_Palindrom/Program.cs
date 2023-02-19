@@ -16,15 +16,7 @@ bool palindromWereWolf(long numW)//Оборотень
     order = order / 10;
     loop++;
   }
-  return numW.Equals(altnumW); //.SequenceEqual(altnumW);
-  //if (altnumW == numW)
-  //{
-   // return true;
-  //}
-  //else
-  //{
-    //return false;
-  //}
+  return numW.Equals(altnumW); 
 }
 //Второй способ - попарное сравнение симметрично расположенных знаков в числе
 bool palindromMirror(long numM)//Зеркало
