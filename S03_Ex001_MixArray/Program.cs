@@ -25,7 +25,7 @@ int[,] FrequencyDictionary(int[] array, int min = 1, int max = 100)
 {
   int size = max - min + 1;
   int index, item;
-  int[,] dictionary = new int[size, size];
+  int[,] dictionary = new int[size, 2];
 
   for (index = 0; index < size; index++)
   {
