@@ -1,32 +1,32 @@
 ﻿//Песочница
-int DigitInPosition(long num, int position)
+string GetHtml(string url, string path)
 {
-  num = Math.Abs(num);//отрицательные числа берём по модулю
-  long digits = Convert.ToInt64((Math.Floor(Math.Log10(num)) + 1));//переменная проверки разрядности
-  int digit=-1;
-  if (position <= digits && position > 0)
+  string html = String.Empty;
+  if (!File.Exists(path))
   {
-    //Изменяем значение digits в зависисмости от запрошенной позиции
-    digits = Convert.ToInt64(Math.Pow(10, digits) / Math.Pow(10, position));
-    //Корректный результат
-    digit=Convert.ToInt32(num / digits % 10);
-    return digit;//Convert.ToInt32(num / digits % 10);
+    html = new HttpClient().GetStringAsync(url).Result;
+    File.WriteAllText(path, html);
   }
-  
-    return digit;
+  else
+  {
+    html = File.ReadAllText(path);
+  }
+  return html;
+}
+string GetTitle(string page)
+{
+  int posFirst = 0;
+  int posLast = 0;
+
+  posFirst = page.IndexOf("<title>")+7;
+  posLast = page.IndexOf("</title>");
+  return page.Substring(posFirst, posLast-posFirst);
 }
 
+string url = "https://google.com";
+string localPath = "google.html";
+string html = GetHtml(url, localPath);
+string urlTitle = string.Empty;
+urlTitle = GetTitle(html);
 Console.Clear();
-Console.Write("Введите число: ");
-long num10 = long.Parse(Console.ReadLine());
-Console.Write("Введите искомую позицию: ");
-int pos10 = int.Parse(Console.ReadLine());
-int result = DigitInPosition(num10, pos10);
-if (result >= 0)
-{
-  Console.WriteLine("В числе " + num10 + " в позиции " + pos10 + " находится цифра " + result);
-}
-else
-{
-  Console.WriteLine("Введены некорректные значения");
-}
+System.Console.WriteLine(urlTitle);
