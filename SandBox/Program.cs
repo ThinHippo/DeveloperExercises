@@ -13,18 +13,21 @@ string GetHtml(string url, string path)
   }
   return html;
 }
+
 string GetTitle(string page)
 {
   int posFirst = 0;
   int posLast = 0;
-
-  posFirst = page.IndexOf("<title>")+7;
-  posLast = page.IndexOf("</title>");
-  return page.Substring(posFirst, posLast-posFirst);
+  string firstTag = "title>";
+  string lastTag = "</" + firstTag;
+  firstTag = "<" + firstTag;
+  posFirst = page.IndexOf(firstTag) + firstTag.Length;
+  posLast = page.IndexOf(lastTag);
+  return page.Substring(posFirst, posLast - posFirst);
 }
 
 string url = "https://google.com";
-string localPath = "google.html";
+string localPath = "trampampam.html";
 string html = GetHtml(url, localPath);
 string urlTitle = string.Empty;
 urlTitle = GetTitle(html);
