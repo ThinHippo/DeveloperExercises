@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# In my projects
+SandBox/
+*.html
 # User-specific files
 *.rsuser
 *.suo
