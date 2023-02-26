@@ -1,45 +1,55 @@
 public static class ArrayMethod
 {
-
-  public static int[] CreateArrayInt(bool allowLimit = false, bool byUser = false, int minSize = 3, int maxSize = 10, string msg = "Укажите размер (количество элементов) массива.")
+  //Создание массива
+  public static void CreateArray(out int[] array, bool allowLimit = true, int minSize = 3, int maxSize = 10)//random+int
   {
     int size;
-    switch (byUser)
+    if (!allowLimit)
     {
-      case true:
-        {
-          size = UserSetArraySize(allowLimit, minSize, maxSize, msg);
-          break;
-        }
-      case false:
-        {
-          size = new Random().Next(minSize, maxSize + 1);
-          break;
-        }
+      size = new Random().Next(minSize, maxSize + 1);
     }
-    int[] arr = new int[size];
-    return arr;
+    else
+    {
+      bool inLimit = false;
+      do
+      {
+        size = new Random().Next(minSize, maxSize + 1);
+        inLimit = (size >= minSize && size <= maxSize);
+      }
+      while (!inLimit);
+    }
+    array = new int[size];
   }
-  public static double[] CreateArrayDouble(bool allowLimit = false, bool byUser = false, int minSize = 5, int maxSize = 50, string msg = "Укажите размер (количество элементов) массива.")
+  public static void CreateArray(out double[] array, bool allowLimit = true, int minSize = 3, int maxSize = 10)//random+double
   {
     int size;
-    switch (byUser)
+    if (!allowLimit)
     {
-      case true:
-        {
-          size = UserSetArraySize(allowLimit, minSize, maxSize, msg);
-          break;
-        }
-      case false:
-        {
-          size = new Random().Next(minSize, maxSize + 1);
-          break;
-        }
+      size = new Random().Next(minSize, maxSize + 1);
     }
-    double[] arr = new double[size];
-    return arr;
+    else
+    {
+      bool inLimit = false;
+      do
+      {
+        size = new Random().Next(minSize, maxSize + 1);
+        inLimit = (size >= minSize && size <= maxSize);
+      }
+      while (!inLimit);
+    }
+    array = new double[size];
   }
-  private static int UserSetArraySize(bool withLimit, int minSize, int maxSize, string msg = "Укажите размер (количество элементов) массива: ")
+  public static void CreateArray(out double[] array, bool allowLimit = true, int minSize = 3, int maxSize = 10, string msg = "Укажите размер массива: ")//user+double
+  {
+    int size = UserEntersArraySize(allowLimit, minSize, maxSize, msg);
+    array = new double[size];
+  }
+  public static void CreateArray(out int[] array, bool allowLimit = true, int minSize = 3, int maxSize = 10, string msg = "Укажите размер массива: ")//user+int
+  {
+    int size = UserEntersArraySize(allowLimit, minSize, maxSize, msg);
+    array = new int[size];
+  }
+  private static int UserEntersArraySize(bool withLimit, int minSize, int maxSize, string msg)
   {
     int size;
     bool gooduser;
@@ -53,6 +63,8 @@ public static class ArrayMethod
     while (!gooduser);
     return size;
   }
+
+  //Заполнение массива
   public static void FillArray(int[] arr, bool allowLimit = false, int minValue = 0, int maxValue = 100, bool byUser = true, string msg = "Введите поочередно все элементы массива.")
   {
     for (int index = 0; index < arr.Length; index++)
@@ -141,21 +153,30 @@ public static class ArrayMethod
     }
   }
 
-
-
-
-  public static int ArrValueSumm(int[] arr, bool part = true)//true - только положительные,false - только отрицательные
+  //Сумма элементов массива в зависимости от знака числа (+/-)
+  public static double ArrayItemSummByValuePositive(int[] arr, bool positive = true)//true - только положительные,false - только отрицательные
   {
-    int result = 0;
+    double result = 0;
     for (int index = 0; index < arr.Length; index++)
     {
-      if (part && arr[index] > 0) result = result + arr[index];
-      if (!part && arr[index] < 0) result = result + arr[index];
+      if (positive && arr[index] > 0) result = result + arr[index];
+      if (!positive && arr[index] < 0) result = result + arr[index];
+    }
+    return result;
+  }
+  public static double ArrayItemSummByValuePositive(double[] arr, bool positive = true)//true - только положительные,false - только отрицательные
+  {
+    double result = 0;
+    for (int index = 0; index < arr.Length; index++)
+    {
+      if (positive && arr[index] > 0) result = result + arr[index];
+      if (!positive && arr[index] < 0) result = result + arr[index];
     }
     return result;
   }
 
-  public static int ArrayItemCountByParity(int[] arr, bool parity)//parity = true считаем чётные, false - нечетные
+  //Количество элементов массива в зависимости от четности значения
+  public static int ArrayItemCountByValueParity(int[] arr, bool parity)//parity = true считаем чётные, false - нечетные
   {
     int result = 0;
     for (int index = 0; index < arr.Length; index++)
@@ -165,7 +186,9 @@ public static class ArrayMethod
     }
     return result;
   }
-  public static double ArrayItemSummByParityPosition(int[] arr, bool parity)
+
+  //Сумма значений массива в зависимости от четности индекса
+  public static double ArrayItemSummByPositionParity(int[] arr, bool parity)
   {
     double result = 0;
     int index = 0;
@@ -177,7 +200,7 @@ public static class ArrayMethod
     }
     return result;
   }
-  public static double ArrayItemSummByParityPosition(double[] arr, bool parity)
+  public static double ArrayItemSummByPositionParity(double[] arr, bool parity)
   {
     double result = 0;
     int index = 0;
@@ -189,7 +212,8 @@ public static class ArrayMethod
     }
     return result;
   }
-  //
+
+  //Преобразование массива положительные значения в отрицательные и наоборот
   public static int[] NegativeArray(int[] arr)
   {
     int[] nArr = arr;
@@ -199,7 +223,8 @@ public static class ArrayMethod
     }
     return nArr;
   }
-  //Задача 3: Задайте массив. Напишите программу, которая определяет, присутствует ли заданное число в массиве.
+
+  //Проверка вхождения числа в массив
   public static bool NumberInArray(int[] arr, int number)
   {
     for (int index = 0; index < arr.Length; index++)
@@ -216,29 +241,52 @@ public static class ArrayMethod
     }
     return false;
   }
-  public static string ArrayInString(int[] arr, string separator=", ") => string.Join(separator, arr);
-  public static string ArrayInString(double[] arr, string separator=", ") => string.Join(separator, arr);
-  public static string ArrayInString(string[] arr, string separator) => string.Join(separator, arr);
-  public static string[] StringArrayViaSplit(string text, string separator=", ") => text.Split(separator);
-  public static int[] IntArrayViaSplit(string text, string separator)
+
+  //Формирование строки из значений массива
+  public static string ArrayAsString(int[] arr, string separator = ", ") => string.Join(separator, arr);
+  public static string ArrayAsString(double[] arr, string separator = ", ") => string.Join(separator, arr);
+  public static string ArrayAsString(string[] arr, string separator) => string.Join(separator, arr);
+
+  //Получение массива через разделение строки
+  public static void ArrayViaSplit(out string[] arr, string text, string separator = ", ")
   {
-    string[] arrString = StringArrayViaSplit(text, separator);
-    int[] arrInt = new int[arrString.Length];
-    int value = 0;
-    for (int index = 0; index < arrInt.Length; index++)
-    {
-      if (int.TryParse(arrString[index], out value)) arrInt[index] = value;
-    }
-    return arrInt;
+    arr = text.Split(separator);
   }
+  public static void ArrayViaSplit(out int[] arr, string text, string separator)
+  {
+    ArrayViaSplit(out string[] arrString, text, separator);
+    arr = new int[arrString.Length];
+    int value = 0;
+    for (int index = 0; index < arr.Length; index++)
+    {
+      if (int.TryParse(arrString[index], out value)) arr[index] = value;
+    }
+  }
+  public static void ArrayViaSplit(out double[] arr, string text, string separator)
+  {
+    ArrayViaSplit(out string[] arrString, text, separator);
+    arr = new double[arrString.Length];
+    double value = 0;
+    for (int index = 0; index < arr.Length; index++)
+    {
+      if (double.TryParse(arrString[index], out value)) arr[index] = value;
+    }
+  }
+
+  //Максимальное значение в массиве
   public static double MaxValueInArray(double[] arr) => arr.Max();
   public static double MaxValueInArray(int[] arr) => arr.Max();
+
+  //Минимальное значение в массиве
   public static double MinValueInArray(double[] arr) => arr.Min();
   public static double MinValueInArray(int[] arr) => arr.Min();
 }
+
 //Математические функции
 public class MathMethod
 {
+
+  //Возведение числа в степень
   public static double NumberToPower(double number, int power)
   {
     if (power == 0) return 1;
@@ -253,6 +301,8 @@ public class MathMethod
     if (mult == -1) result = 1 / result;
     return result;
   }
+
+  //Сумма всех цифр в числе
   public static long AllDigitInNumberSumm(long number)
   {
     long result = 0;
@@ -263,7 +313,9 @@ public class MathMethod
     }
     return result;
   }
-  public static double UserEntersDouble(string msg)
+
+  //Пользователь вводит число
+  public static void UserEntersNumber(out double value, string msg)
   {
     double dNum;
     bool gooduser = false;
@@ -273,9 +325,9 @@ public class MathMethod
       gooduser = double.TryParse(Console.ReadLine(), out dNum);
     }
     while (!gooduser);
-    return dNum;
+    value = dNum;
   }
-  public static int UserEntersInteger(string msg)
+  public static void UserEntersNumber(out int value, string msg)
   {
     int iNum;
     bool gooduser = false;
@@ -285,9 +337,9 @@ public class MathMethod
       gooduser = int.TryParse(Console.ReadLine(), out iNum);
     }
     while (!gooduser);
-    return iNum;
+    value = iNum;
   }
-  public static long UserEntersLong(string msg)
+  public static void UserEntersNumber(out long value, string msg)
   {
     long lNum;
     bool gooduser = false;
@@ -297,7 +349,7 @@ public class MathMethod
       gooduser = long.TryParse(Console.ReadLine(), out lNum);
     }
     while (!gooduser);
-    return lNum;
+    value = lNum;
   }
 }
 

@@ -46,8 +46,8 @@ public class TaskStarter
   private static string Task25()
   {
     Console.WriteLine("Задача 25: Напишите метод, который принимает на вход два числа (A и B) и возводит число A в натуральную степень B.\nATTENTION: Использовать Math.Pow запрещено иерархом!");
-    double num = UserEntersDouble("Введите число A: ");
-    int power = UserEntersInteger("Введите число B: ");
+    UserEntersNumber(out double num, "Введите число A: ");
+    UserEntersNumber(out int power,"Введите число B: ");
     double result = NumberToPower(num, power);
     Console.WriteLine(num + "^" + power + " = " + result);
     return "Выполнение задачи 25 завершено.";
@@ -55,7 +55,7 @@ public class TaskStarter
   private static string Task27()
   {
     Console.WriteLine("Задача 27: Напишите метод, который принимает на вход число и выдаёт сумму цифр в числе.");
-    long num = UserEntersLong("Введите целое число: ");
+    UserEntersNumber(out long num,"Введите целое число: ");
     long result = AllDigitInNumberSumm(num);
     Console.WriteLine(num + ">" + result);
     return "Выполнение задачи 27 завершено.";
@@ -63,49 +63,49 @@ public class TaskStarter
   private static string Task29()
   {
     Console.WriteLine("Задача 29: Напишите метод, который формирует массив из N элементов из файла и выводит их на экран\n(разделители намеренно сделаны разными для исходного и считанного массива).");
-    int[] arrayOut = CreateArrayInt(false, true);
+    CreateArray(out int[] arrayOut,true,10,15);
     FillArray(arrayOut, false, -15, 123, false);
     string separatorOut = "||";
     string path = "arrayjourney.txt";
-    string result = ArrayInString(arrayOut, separatorOut);
+    string result = ArrayAsString(arrayOut, separatorOut);
     Console.WriteLine("Исходный массив: " + result);
     WriteStringToFile(path, result);
     result = ReadStringFromFile(path);
     Console.WriteLine("Строка в файле: " + result);
-    int[] arrayIn = IntArrayViaSplit(result, separatorOut);
+    ArrayViaSplit(out int[] arrayIn, result, separatorOut);
     string separatorIn = "//";
-    result = ArrayInString(arrayIn, separatorIn);
+    result = ArrayAsString(arrayIn, separatorIn);
     Console.WriteLine("Считанный массив: " + result);
     return "Выполнение задачи 29 завершено.";
   }
   private static string Task34()
   {
     Console.WriteLine("Задача 34: Задайте массив заполненный случайными положительными трёхзначными числами. Напишите программу, которая покажет количество чётных чисел в массиве.");
-    int[] trio = CreateArrayInt();
+    CreateArray(out int[] trio,true,5,10);
     int min = 100;
     int max = 999;
     FillArray(trio, true, min, max, false);
-    int count = ArrayItemCountByParity(trio, true);
-    Console.WriteLine("Исходный массив [" + min + ", " + max + "]: " + ArrayInString(trio, ", "));
+    int count = ArrayItemCountByValueParity(trio, true);
+    Console.WriteLine("Исходный массив [" + min + ", " + max + "]: " + ArrayAsString(trio, ", "));
     Console.WriteLine("Количество четных значений: " + count);
     return "Выполнение задачи 34 завершено.";
   }
   private static string Task36()
   {
     Console.WriteLine("Задача 36: Задайте одномерный массив, заполненный случайными числами. Найдите сумму элементов, стоящих на нечётных позициях.");
-    int[] arr = CreateArrayInt(false, false, 10, 50);
+    CreateArray(out int[] arr,true, 10, 50);
     FillArray(arr, false, -50, 174, false);
-    double result = ArrayItemSummByParityPosition(arr, false);
-    Console.WriteLine("Исходный массив: " + ArrayInString(arr));
+    double result = ArrayItemSummByPositionParity(arr, false);
+    Console.WriteLine("Исходный массив: " + ArrayAsString(arr));
     Console.WriteLine("Сумма элементов массива в нечётных позициях равна: " + result);
     return "Выполнение задачи 36 завершено.";
   }
   private static string Task38()
   {
     Console.WriteLine("Задача 38: Задайте массив вещественных чисел. Найдите разницу между максимальным и минимальным элементов массива.");
-    double[] doubles = CreateArrayDouble();
+    CreateArray(out double[] doubles,true,5,15);
     FillArray(doubles, true, -15, 76, false);
-    Console.WriteLine(ArrayInString(doubles, ", "));
+    Console.WriteLine(ArrayAsString(doubles, ", "));
     double max = MaxValueInArray(doubles);
     double min = MinValueInArray(doubles);
     double result = max - min;
@@ -127,7 +127,7 @@ public class TaskStarter
     Console.WriteLine("Задача №" + num + " в списке решённых не представлена. Возможно она решена в другом проекте, но это не точно...");
     return false;
   }
-  private static string MyTasksInString() => ArrayInString(MyTasks(), ", ");
+  private static string MyTasksInString() => ArrayAsString(MyTasks(), ", ");
   private static int[] MyTasks()
   {
     int[] tasks = { 25, 27, 29, 34, 36, 38 };
