@@ -1,35 +1,23 @@
 ﻿//Песочница
-string GetHtml(string url, string path)
+static byte[] StringToByteArray(string text)
 {
-  string html = String.Empty;
-  if (!File.Exists(path))
+  byte [] author=new byte[text.Length];
+  for (int i=0;i<author.Length;i++)
   {
-    html = new HttpClient().GetStringAsync(url).Result;
-    File.WriteAllText(path, html);
+    author[i]=Convert.ToByte(text[i]);
   }
-  else
-  {
-    html = File.ReadAllText(path);
-  }
-  return html;
+  Console.Write(string.Join(", ",author));
+  Console.WriteLine();
+  return author;
 }
-
-string GetTitle(string page)
-{
-  int posFirst = 0;
-  int posLast = 0;
-  string firstTag = "title>";
-  string lastTag = "</" + firstTag;
-  firstTag = "<" + firstTag;
-  posFirst = page.IndexOf(firstTag) + firstTag.Length;
-  posLast = page.IndexOf(lastTag);
-  return page.Substring(posFirst, posLast - posFirst);
-}
-
-string url = "https://google.com";
-string localPath = "trampampam.html";
-string html = GetHtml(url, localPath);
-string urlTitle = string.Empty;
-urlTitle = GetTitle(html);
+//вызов
 Console.Clear();
-System.Console.WriteLine(urlTitle);
+string me="Copyright by Alexey Khudiakov 2023";
+byte[] asbyte=StringToByteArray(me);
+string hex=Convert.ToHexString(asbyte);
+string newme=string.Empty;
+Console.Write(hex);
+asbyte=Convert.FromHexString(hex);
+//string as=Convert.ToHexString(asbyte)
+
+//PrintArray(NegativeArray(testArr));
