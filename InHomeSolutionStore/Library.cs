@@ -55,15 +55,32 @@ public static class ArrayMethod
     bool gooduser;
     do
     {
-      if (withLimit) Console.WriteLine("Размер массива определён диапазоном от " + minSize + " до " + maxSize + " включительно.");
-      Console.WriteLine(msg);
+      if (withLimit) Console.WriteLine("\nРазмер определён диапазоном от " + minSize + " до " + maxSize + " включительно.");
+      Console.Write(msg);
       gooduser = int.TryParse(Console.ReadLine(), out size);
       if (gooduser && withLimit) gooduser = (size >= minSize && size <= maxSize);
     }
     while (!gooduser);
     return size;
   }
-
+  public static void CreateArray(out double[,] array, bool allowLimit = true, int minSize = 3, int maxSize = 10, string msg = "Укажите размер двумерного массива")
+  {
+    int rowSize = UserEntersArraySize(allowLimit, minSize, maxSize, "Введите количество строк: ");
+    int columnSize = UserEntersArraySize(allowLimit, minSize, maxSize, "Введите количество столбцов: ");
+    array = new double[rowSize, columnSize];
+  }
+  public static void CreateArray(out int[,] array, bool allowLimit = true, int minSize = 3, int maxSize = 10, string msg = "Укажите размер двумерного массива")
+  {
+    int rowSize = UserEntersArraySize(allowLimit, minSize, maxSize, "Введите количество строк: ");
+    int columnSize = UserEntersArraySize(allowLimit, minSize, maxSize, "Введите количество столбцов: ");
+    array = new int[rowSize, columnSize];
+  }
+  public static void CreateArray(out int[,] array, int minSize = 3, int maxSize = 10)
+  {
+    int rows = new Random().Next(minSize, maxSize + 1);
+    int columns = new Random().Next(minSize, maxSize + 1);
+    array = new int[rows, columns];
+  }
   //Заполнение массива
   public static void FillArray(int[] arr, bool allowLimit = false, int minValue = 0, int maxValue = 100, bool byUser = true, string msg = "Введите поочередно все элементы массива.")
   {
@@ -86,7 +103,44 @@ public static class ArrayMethod
   }
   public static void FillArray(double[] arr, bool allowLimit = false, int minValue = 0, int maxValue = 100, bool byUser = true, string msg = "Введите поочередно все элементы массива.")
   {
-
+    for (int index = 0; index < arr.Length; index++)
+    {
+      switch (byUser)
+      {
+        case true:
+          {
+            UserFillArray(arr, allowLimit, minValue, maxValue, msg);
+            break;
+          }
+        case false:
+          {
+            RandomFillArray(arr, minValue, maxValue);
+            break;
+          }
+      }
+    }
+  }
+  public static void FillArray(double[,] arr, bool allowLimit = false, int minValue = 0, int maxValue = 100, int round = 3, bool byUser = true, string msg = "Введите поочередно все элементы массива.")
+  {
+    for (int index = 0; index < arr.Length; index++)
+    {
+      switch (byUser)
+      {
+        case true:
+          {
+            UserFillArray(arr, allowLimit, minValue, maxValue, round, msg);
+            break;
+          }
+        case false:
+          {
+            RandomFillArray(arr, minValue, maxValue, round);
+            break;
+          }
+      }
+    }
+  }
+  public static void FillArray(int[,] arr, bool allowLimit = false, int minValue = 0, int maxValue = 100, bool byUser = true, string msg = "Введите поочередно все элементы массива.")
+  {
     for (int index = 0; index < arr.Length; index++)
     {
       switch (byUser)
@@ -138,6 +192,46 @@ public static class ArrayMethod
       arr[index] = value;
     }
   }
+  private static void UserFillArray(double[,] arr, bool withLimit, int minValue, int maxValue, int round, string msg = "Введите поочередно все элементы массива.")
+  {
+    double value;
+    bool gooduser;
+    Console.WriteLine(msg);
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        do
+        {
+          Console.Write("Введите элемент [{0;1}]: ", i, j);
+          gooduser = double.TryParse(Console.ReadLine(), out value);
+          if (gooduser && withLimit) gooduser = (value >= minValue && value <= maxValue);
+        }
+        while (!gooduser);
+        arr[i, j] = Math.Round(value, round);
+      }
+    }
+  }
+  private static void UserFillArray(int[,] arr, bool withLimit, int minValue, int maxValue, string msg = "Введите поочередно все элементы массива.")
+  {
+    int value;
+    bool gooduser;
+    Console.WriteLine(msg);
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        do
+        {
+          Console.Write("Введите элемент [{0;1}]: ", i, j);
+          gooduser = int.TryParse(Console.ReadLine(), out value);
+          if (gooduser && withLimit) gooduser = (value >= minValue && value <= maxValue);
+        }
+        while (!gooduser);
+        arr[i, j] = value;
+      }
+    }
+  }
   private static void RandomFillArray(int[] arr, int min, int max)
   {
     for (int index = 0; index < arr.Length; index++)
@@ -152,7 +246,26 @@ public static class ArrayMethod
       arr[index] = new Random().NextDouble() + new Random().Next(min, max);
     }
   }
-
+  private static void RandomFillArray(double[,] arr, int min, int max, int round)
+  {
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        arr[i, j] = Math.Round(new Random().NextDouble() + new Random().Next(min, max), round);
+      }
+    }
+  }
+  private static void RandomFillArray(int[,] arr, int min, int max)
+  {
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        arr[i, j] = new Random().Next(min, max + 1);
+      }
+    }
+  }
   //Сумма элементов массива в зависимости от знака числа (+/-)
   public static double ArrayItemSummByValuePositive(int[] arr, bool positive = true)//true - только положительные,false - только отрицательные
   {
@@ -212,7 +325,6 @@ public static class ArrayMethod
     }
     return result;
   }
-
   //Преобразование массива положительные значения в отрицательные и наоборот
   public static int[] NegativeArray(int[] arr)
   {
@@ -223,7 +335,6 @@ public static class ArrayMethod
     }
     return nArr;
   }
-
   //Проверка вхождения числа в массив
   public static bool NumberInArray(int[] arr, int number)
   {
@@ -241,12 +352,160 @@ public static class ArrayMethod
     }
     return false;
   }
-
+  //Вычисление среднего арифметического по строкам/столбцам двумерного массива
+  public static double[,] CalculateAverageOfArrayItems(int[,] arr, bool row = true)
+  {
+    double[,] avgArr;
+    double summ = 0;
+    if (row)
+    {
+      avgArr = new double[arr.GetLength(0), 1];
+      for (int i = 0; i < arr.GetLength(0); i++)
+      {
+        summ = 0;
+        for (int j = 0; j < arr.GetLength(1); j++)
+        {
+          summ = summ + arr[i, j];
+        }
+        avgArr[i, 0] = summ / arr.GetLength(0);
+      }
+    }
+    else
+    {
+      avgArr = new double[1, arr.GetLength(1)];
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        summ = 0;
+        for (int i = 0; i < arr.GetLength(0); i++)
+        {
+          summ = summ + arr[i, j];
+        }
+        avgArr[0, j] = summ / arr.GetLength(1);
+      }
+    }
+    return avgArr;
+  }
   //Формирование строки из значений массива
   public static string ArrayAsString(int[] arr, string separator = ", ") => string.Join(separator, arr);
   public static string ArrayAsString(double[] arr, string separator = ", ") => string.Join(separator, arr);
   public static string ArrayAsString(string[] arr, string separator) => string.Join(separator, arr);
 
+  public static string ArrayAsString(int[,] arr, bool writeline = true, string separator = " ")
+  {
+    string output = string.Empty;
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        output = output + separator + arr[i, j];
+      }
+      output = output + "\n";
+    }
+    if (writeline) Console.WriteLine(output);
+    return output.Trim();
+  }
+  public static string ArrayAsString(double[,] arr, bool writeline = true, string separator = " ")
+  {
+    string output = string.Empty;
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        output = output + separator + arr[i, j];
+      }
+      output = output + "\n";
+    }
+    if (writeline) Console.WriteLine(output);
+    return output.Trim();
+  }
+  public static void PrintTabularView(int[,] arr)
+  {
+    int maxLen = GetMaxLenItemInArray(arr) + 2;
+    int padLeft = 0;
+    string padIn = string.Empty;
+    string padOut = " ";
+    string[,] output = new string[arr.GetLength(0), arr.GetLength(1)];
+    string tmpRow = string.Empty;
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        padIn = string.Empty;
+        padLeft = maxLen - Convert.ToString(arr[i, j]).Length - 1;
+        padIn = padIn.PadLeft(padLeft);
+        output[i, j] = padIn + Convert.ToString(arr[i, j]) + padOut;
+      }
+    }
+    for (int i = 0; i < output.GetLength(0); i++)
+    {
+      for (int j = 0; j < output.GetLength(1); j++)
+      {
+        tmpRow = tmpRow + output[i, j];
+      }
+      Console.WriteLine(tmpRow);
+      tmpRow = string.Empty;
+    }
+  }
+  public static void PrintTabularView(double[,] arr)
+  {
+    int maxLen = GetMaxLenItemInArray(arr) + 2;
+    int padLeft = 0;
+    string padIn = string.Empty;
+    string padOut = " ";
+    string[,] output = new string[arr.GetLength(0), arr.GetLength(1)];
+    string tmpRow = string.Empty;
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        padIn = string.Empty;
+        padLeft = maxLen - Convert.ToString(arr[i, j]).Length - 1;
+        padIn = padIn.PadLeft(padLeft);
+        output[i, j] = padIn + Convert.ToString(arr[i, j]) + padOut;
+      }
+    }
+    for (int i = 0; i < output.GetLength(0); i++)
+    {
+      for (int j = 0; j < output.GetLength(1); j++)
+      {
+        tmpRow = tmpRow + output[i, j];
+      }
+      Console.WriteLine(tmpRow);
+      tmpRow = string.Empty;
+    }
+  }
+  private static int GetMaxLenItemInArray(int[,] arr)
+  {
+    int minValue = arr[0, 0];
+    int maxValue = arr[0, 0];
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        if (arr[i, j] > maxValue) maxValue = arr[i, j];
+        if (arr[i, j] < minValue) minValue = arr[i, j];
+      }
+    }
+    int maxLen = Convert.ToString(maxValue).Length + 1;
+    if (Convert.ToString(minValue).Length > maxLen) maxLen = Convert.ToString(minValue).Length + 1;
+    return maxLen;
+  }
+  private static int GetMaxLenItemInArray(double[,] arr)
+  {
+    double minValue = arr[0, 0];
+    double maxValue = arr[0, 0];
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        if (arr[i, j] > maxValue) maxValue = arr[i, j];
+        if (arr[i, j] < minValue) minValue = arr[i, j];
+      }
+    }
+    int maxLen = Convert.ToString(maxValue).Length + 1;
+    if (Convert.ToString(minValue).Length > maxLen) maxLen = Convert.ToString(minValue).Length + 1;
+    return maxLen;
+  }
   //Получение массива через разделение строки
   public static void ArrayViaSplit(out string[] arr, string text, string separator = ", ")
   {
@@ -280,6 +539,23 @@ public static class ArrayMethod
   //Минимальное значение в массиве
   public static double MinValueInArray(double[] arr) => arr.Min();
   public static double MinValueInArray(int[] arr) => arr.Min();
+
+  //Поиск элемента по индексам
+  public static bool GetArrayItemByPosition(int[,] array, int row, int column, out int item)
+  {
+    bool correct = true;
+    item = 0;
+    try
+    {
+      item = array[row, column];
+    }
+    catch
+    {
+      correct = false;
+    }
+    return correct;
+  }
+
 }
 
 //Математические функции
@@ -301,7 +577,6 @@ public class MathMethod
     if (mult == -1) result = 1 / result;
     return result;
   }
-
   //Сумма всех цифр в числе
   public static long AllDigitInNumberSumm(long number)
   {
@@ -313,7 +588,87 @@ public class MathMethod
     }
     return result;
   }
-
+  //Подсчет количества положельных/отрицательных значений из введенных пользователем
+  public static int CountingNumbersBySignInUserEnters(string msg, bool positive = true, bool printnumbers = false)
+  {
+    Console.WriteLine(msg);
+    int tmpCount = 0;
+    double[] userNumbers = UserBuildArray();
+    if (printnumbers) Console.WriteLine("Введены числа: " + string.Join(", ", userNumbers));
+    if (userNumbers.Length > 0)
+    {
+      for (int i = 0; i < userNumbers.Length; i++)
+      {
+        if (positive && userNumbers[i] > 0) tmpCount++;
+        if (!positive && userNumbers[i] < 0) tmpCount++;
+      }
+    }
+    else
+    {
+      Console.WriteLine("Пользователь не ввёл ни одного числа");
+    }
+    return tmpCount;
+  }
+  private static double[] UserBuildArray()
+  {
+    bool gooduser = true;
+    double tmpValue = 0;
+    int tmpCount = 0;
+    double[] returnArray = new double[0];
+    do
+    {
+      gooduser = double.TryParse(Console.ReadLine(), out tmpValue);
+      if (gooduser)
+      {
+        tmpCount++;
+        Array.Resize(ref returnArray, tmpCount);
+        returnArray[tmpCount - 1] = tmpValue;
+      }
+    }
+    while (gooduser);
+    return returnArray;
+  }
+  //Получение от пользователя значений угловых коэффициентов и коэффициентов сдвига для линейных функций
+  public static void GetLineFunctionShiftAndAngle(double[,] lines, string msg)
+  {
+    Console.WriteLine(msg);
+    double tmpValue = 0;
+    string[] prompt = { "k", "b" };
+    for (int i = 0; i < lines.GetLength(0); i++)
+    {
+      for (int j = 0; j < lines.GetLength(1); j++)
+      {
+        UserEntersNumber(out tmpValue, "Введите значение " + prompt[j] + "(" + (i + 1) + "): ");
+        lines[i, j] = tmpValue;
+      }
+    }
+  }
+  //Получение координат точки пересечения графиков двух линенйых функций
+  public static double[,] GetIntersectionPointsOfLines(double[,] lines, int firstLineIndex = 0, int secondLineIndex = 1)
+  {
+    double[,] points = new double[1, 2];
+    if (lines[firstLineIndex, 0] != lines[secondLineIndex, 0])
+    {
+      points[0, 0] = (lines[secondLineIndex, 1] - lines[firstLineIndex, 1]) / (lines[firstLineIndex, 0] - lines[secondLineIndex, 0]);//X)
+      points[0, 1] = (lines[firstLineIndex, 0] * points[0, 0] + lines[firstLineIndex, 1]);//Y
+    }
+    else
+    {
+      points = new double[0, 0];
+    }
+    return points;
+  }
+  //приведение числа к виду -n привыводе в консоль формул уравнений
+  public static string GetAdditionSymbol(double number)
+  {
+    string symbol = string.Empty;
+    if (number > 0) symbol = "+" + number;
+    else
+    {
+      symbol = Convert.ToString(number);
+    }
+    return symbol;
+  }
   //Пользователь вводит число
   public static void UserEntersNumber(out double value, string msg)
   {
