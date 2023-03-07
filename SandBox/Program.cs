@@ -52,31 +52,74 @@ int[,] ReplaceRowAndColumnInArray(int[,] arrIn)
   return transformArray;
 }
 
-//Задача 1: Задайте двумерный массив. Напишите программу, которая поменяет местами первую и последнюю строку массива.
+int[,] PascalsTriangle(int row)
+{
+  int[,] triangle = new int[row, row];
+  for (int i = 0; i < row; i++)
+  {
+    triangle[i, 0] = 1;
+    triangle[i, i] = 1;
+  }
 
-//Задача 2: Задайте двумерный массив. Напишите программу, которая заменяет строки на столбцы. В случае, если это невозможно, программа должна вывести сообщение для пользователя.
+  if (row > 3)
+  {
+    int newRow = 0;
+    int newColumn = 0;
+    for (int i = 1; i < row - 1; i++)//строки треугольника
+    {
+      for (int j = 0; j < i; j++)//столбцы треугольника
+      {
+        newRow = i + 1;
+        newColumn = j + 1;
+        triangle[newRow, newColumn] = triangle[i, j] + triangle[i, newColumn];
+      }
+    }
+  }
+  return triangle;
+}
+void PrintTriangle(string [] arrIn)
+{
+  for (int i = 0; i < arrIn.GetLength(0); i++)
+  {
+    Console.WriteLine(arrIn[i]);
+  }
+}
+string[] TriangleAsTriangle(int[,] arrIn)
+{
+  string[] asTriangle = new string[arrIn.GetLength(0)];
+  string row = string.Empty;
+  for (int i = 0; i < asTriangle.Length; i++)
+  {
+    for (int j = 0; j <= i; j++)
+    {
+      row = row + $"{arrIn[i, j],7}";
+    }
+    asTriangle[i] = row;
+    row = string.Empty;
+  }
+  return asTriangle;
+}
+void PrintAsTriangle(string[] arr)
+{
+  string emptyText=string.Empty;
+  int maxlen = arr[arr.Length - 1].Length / 2;
+  int pad = 0;
+  for (int i = 0; i < arr.Length; i++)
+  {
+    emptyText=string.Empty;
+    pad = maxlen - arr[i].Length / 2;
+    emptyText=emptyText.PadLeft(pad);
+    arr[i] =  emptyText + arr[i];
+  }
+  for (int i = 0; i < arr.Length; i++)
+  {
+    Console.WriteLine(arr[i]);
+  }
 
-//Задача 3: Вывести первые N строк треугольника Паскаля. Сделать вывод в виде равнобедренного треугольника
-//Дополнительно: Сохранить треугольник в файл.
-
-
-
-
-
+}
 
 //вызов
 Console.Clear();
-int[,] testArray = new int[3, 3];
-FillArrayRnd(testArray);
-Console.WriteLine("Исходный массив: ");
-PrintArray(testArray);
-ReplaceFirstAndLastArrayRow(testArray);
-Console.WriteLine("Массив после замены строк: ");
-PrintArray(testArray);
-if (!CorrectArraySize(testArray)) Console.WriteLine("Количество строк и столбцов в массиве не равны.");
-int [,] newArray=ReplaceRowAndColumnInArray(testArray);
-Console.WriteLine("Массив после замены трансформации строк и столбцов: ");
-PrintArray (newArray);
-//Console.Write("Произведение чисел: ");
-//Console.WriteLine(RowMultiplication(testOutA, 1));
-//Console.WriteLine(ColumnMultiplication(testOutA, 0));
+int[,] testArray = PascalsTriangle(25);
+//PrintTriangle(testArray);
+PrintAsTriangle(TriangleAsTriangle(testArray));
