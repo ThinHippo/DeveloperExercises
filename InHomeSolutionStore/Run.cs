@@ -9,7 +9,7 @@ public class TaskStarter
     int goal;
     bool gooduser = false;
     TrueAboutThis();
-    Console.WriteLine("В проекте собраны решения задач 4, 5, 6 и 7 семинаров курса 'Знакомство с языками программирования. C#.'\nДля выбора доступны задачи: " + MyTasksInString());
+    Console.WriteLine("В проекте собраны решения задач 4 - 9 семинаров курса 'Знакомство с языками программирования. C#.'\nДля выбора доступны задачи:\n" + MyTasksInString());
     do
     {
       Console.Write("Введите номер задачи (0 - для выхода из программы): ");
@@ -192,32 +192,159 @@ public class TaskStarter
             minValue: minArrayValue,
             maxValue: maxArrayValue,
             byUser: false);
-    double[,] avgArray=CalculateAverageOfArrayItems(testArray,false);
+    double[,] avgArray = CalculateAverageOfArrayItems(testArray, false);
     PrintTabularView(testArray);
     Console.WriteLine("\nСреднее арифметическое элементов по столбцам");
     PrintTabularView(avgArray);
     return "Выполнение задачи 52 завершено.";
   }
-  //
+  private static string Task54()
+  {
+    Console.WriteLine("Задача 54: Задайте двумерный массив. Напишите программу, которая упорядочит по убыванию элементы каждой строки двумерного массива.");
+    int minSize = 5;
+    int maxSize = 10;
+    int minArrayValue = -10;
+    int maxArrayValue = 50;
+    CreateArray(out int[,] unsorting, minSize, maxSize);
+    FillArray(unsorting,
+            allowLimit: true,
+            minValue: minArrayValue,
+            maxValue: maxArrayValue,
+            byUser: false);
+    Console.WriteLine("Исходный массив до сортировки строк: ");
+    PrintTabularView(unsorting);
+    int[,] aftersorting = unsorting;
+    int minIndexForSorting = 0;
+    int maxIndexForSorting = aftersorting.GetLength(0) - 1;
+    ArraySortingByRowsOrColumns(aftersorting,
+                                ascending: false,
+                                row: true,
+                                from: minIndexForSorting,
+                                to: maxIndexForSorting);
+    Console.WriteLine("Массив после сортировки строк: ");
+    PrintTabularView(aftersorting);
+    return "Выполнение задачи 54 завершено.";
+  }
+  private static string Task56()
+  {
+    Console.WriteLine("Задача 56: Задайте прямоугольный двумерный массив. Напишите программу, которая будет находить строку с наименьшей суммой элементов.\n" +
+    "Программа считает сумму элементов в каждой строке и выдаёт номер строки с наименьшей суммой элементов.");
+    int minSize = 5;
+    int maxSize = 10;
+    int minArrayValue = -20;
+    int maxArrayValue = 50;
+    CreateArray(out int[,] testArray, minSize, maxSize);
+    FillArray(testArray,
+            allowLimit: true,
+            minValue: minArrayValue,
+            maxValue: maxArrayValue,
+            byUser: false);
+    Console.WriteLine("Исходный массив: ");
+    PrintTabularView(testArray);
+    int indexRowWithMaxSumm = GetArrayRowOrColumnIndexByMinSumm(testArray);
+    Console.WriteLine($"Наименьшая сумма элементов в строке: {indexRowWithMaxSumm}");
+    return "Выполнение задачи 56 завершено.";
+  }
+  private static string Task60()
+  {
+    Console.WriteLine("Задача 60. Сформируйте трёхмерный массив из неповторяющихся двузначных чисел.\n" +
+    "Напишите программу, которая будет построчно выводить массив, добавляя индексы каждого элемента.");
+    int minArrayValue = 10;
+    int maxArrayValue = 99;
+    int rank = 3;
+    int countValues = CountOfPossibleUniqValue(minArrayValue, maxArrayValue);
+    Console.WriteLine($"Количество значений {countValues}");
+    int maxSize = MaxArraySizeByCountOfPossibleValues(rank, countValues);
+    Console.WriteLine($"Максимальный размер {maxSize}");
+    if (maxSize > 0)
+    {
+      int minSize = new Random().Next(1, maxSize + 1);
+      Console.WriteLine($"Минимальный размер {minSize}");
+      CreateArray(out int[,,] testArray, minSize, maxSize);
+      FillArrayWithUniqValues(testArray, minArrayValue, maxArrayValue);
+      PrintTabularView(testArray);
+    }
+    else Console.WriteLine("Задан некорректный диапазон уникальных значений");
+    return "Выполнение задачи 60 завершено.";
+  }
+  private static string Task64()
+  {
+    Console.WriteLine("Задача 64: Задайте значение N. Напишите программу, которая выведет все натуральные числа в промежутке от N до 1.\n" +
+    "Выполнить с помощью рекурсии.");
+    UserEntersNumber(out int number, "Введите натуральное (целое положительное) число: ");
+    Console.Write($"N={number}-> ");
+    ShowNaturalNumbersInTheRange(number);
+    return "\nВыполнение задачи 64 завершено.";
+  }
+  private static string Task66()
+  {
+    Console.WriteLine("Задача 66: Задайте значения M и N. Напишите программу, которая найдёт сумму натуральных элементов в промежутке от M до N.");
+    UserEntersNumber(out int m, "Введите натуральное (целое положительное) число M: ");//меньшее
+    UserEntersNumber(out int n, "Введите натуральное (целое положительное) число N: ");//большее
+    int leftNumber = m;
+    int rightNumber = n;
+    if (n < m)
+    {
+      leftNumber = n;
+      rightNumber = m;
+    }
+    int result = GetSummNaturalNumbersInTheRange(leftNumber, rightNumber, 0);
+    Console.WriteLine($"M={m}; N={n}-> {result}");
+    return "Выполнение задачи 66 завершено.";
+  }
+  private static string Task68()
+  {
+    Console.WriteLine("Задача 68: Напишите программу вычисления функции Аккермана с помощью рекурсии. Даны два неотрицательных числа M и N.");
+    UserEntersNumber(out long m, "Введите натуральное (целое положительное) число M: ");//меньшее
+    UserEntersNumber(out long n, "Введите натуральное (целое положительное) число N: ");//большее
+    long result = 0;
+    Console.WriteLine($"Для наглядности возрастания функции значения будут рассчитаны для M={m} N=[0,{n}]");
+    for(long i=0;i<=n;i++)
+    {
+      result = Accerman(m, i);
+      Console.WriteLine($"M={m}; N={i} A(m,n)=" + result);
+    }
+    return "Выполнение задачи 68 завершено.";
+  }
 
+  //Проверки корректности выбранной задачи
   private static bool TaskIsValid(int num)
   {
-    int[] tasks = MyTasks();
-    for (int index = 0; index < tasks.Length; index++)
+    int[,] tasks = MyTasks();
+    bool valid = false;
+    for (int i = 0; i < tasks.GetLength(0); i++)
     {
-      if (tasks[index] == num)
+      for (int j = 0; j < tasks.GetLength(1); j++)
       {
-        return true;
+        if (tasks[i, j] == num && tasks[i, j] != 0) valid = true;
       }
     }
-    Console.WriteLine("Задача №" + num + " в списке решённых не представлена. Возможно она решена в другом проекте, но это не точно...");
-    return false;
+    if (!valid) Console.WriteLine("Задача №" + num + " в списке решённых не представлена. Возможно она решена в другом проекте, но это не точно...");
+    return valid;
   }
-  private static string MyTasksInString() => ArrayAsString(MyTasks(), ", ");
-  private static int[] MyTasks()
+  private static string MyTasksInString() => TaskAsString(MyTasks(), ", ");
+  private static int[,] MyTasks()
   {
-    int[] tasks = { 25, 27, 29, 34, 36, 38, 41, 43, 47, 50, 52 };
+    int[,] tasks = { { 25, 27, 29 }, { 34, 36, 38 }, { 41, 43, 0 }, { 47, 50, 52 }, { 54, 56, 60 }, { 64, 66, 68 } };
     return tasks;
+  }
+  private static string TaskAsString(int[,] tasks, string separator = ", ")
+  {
+    string outstring = string.Empty;
+    for (int i = 0; i < tasks.GetLength(0); i++)
+    {
+      outstring = outstring + $"Семинар {i + 4} Задачи: ";
+      for (int j = 0; j < tasks.GetLength(1); j++)
+      {
+        if (tasks[i, j] == 0)
+        {
+          continue;
+        }
+        outstring = $"{outstring}{$"{tasks[i, j]}{separator}"}";
+      }
+      outstring = $"{outstring}\n";
+    }
+    return outstring;
   }
   private static void TrueAboutThis()
   {

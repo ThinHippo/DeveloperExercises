@@ -41,7 +41,7 @@ public static class ArrayMethod
   }
   public static void CreateArray(out double[] array, bool allowLimit = true, int minSize = 3, int maxSize = 10, string msg = "Укажите размер массива: ")//user+double
   {
-    int size = UserEntersArraySize(allowLimit, minSize, maxSize, msg);
+    int size = UserEntersArraySize(allowLimit, minSize, minSize, msg);
     array = new double[size];
   }
   public static void CreateArray(out int[] array, bool allowLimit = true, int minSize = 3, int maxSize = 10, string msg = "Укажите размер массива: ")//user+int
@@ -80,6 +80,13 @@ public static class ArrayMethod
     int rows = new Random().Next(minSize, maxSize + 1);
     int columns = new Random().Next(minSize, maxSize + 1);
     array = new int[rows, columns];
+  }
+  public static void CreateArray(out int[,,] array, int minSize = 3, int maxSize = 10)
+  {
+    int rows = new Random().Next(minSize, maxSize + 1);
+    int columns = new Random().Next(minSize, maxSize + 1);
+    int deep = new Random().Next(minSize, maxSize + 1);
+    array = new int[rows, columns, deep];
   }
   //Заполнение массива
   public static void FillArray(int[] arr, bool allowLimit = false, int minValue = 0, int maxValue = 100, bool byUser = true, string msg = "Введите поочередно все элементы массива.")
@@ -266,6 +273,72 @@ public static class ArrayMethod
       }
     }
   }
+  public static void FillArrayWithUniqValues(int[,] array, int min, int max)
+  {
+    int uniq = 0;
+    int[] uniqs = new int[array.GetLength(0) * array.GetLength(1)];
+    int entry = 0;
+    for (int i = 0; i < uniqs.Length; i++)
+    {
+      do
+      {
+        uniq = new Random().Next(min, max + 1);
+        entry = Array.IndexOf(uniqs, uniq);
+      }
+      while (entry != -1);
+      uniqs[i] = uniq;
+    }
+    int u = 0;
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+      for (int j = 0; j < array.GetLength(1); j++)
+      {
+        array[i, j] = uniqs[u];
+        u++;
+      }
+    }
+  }
+  public static void FillArrayWithUniqValues(int[,,] array, int min, int max)
+  {
+    int uniq = 0;
+    int[] uniqs = new int[array.GetLength(0) * array.GetLength(1) * array.GetLength(2)];
+    int entry = 0;
+    for (int i = 0; i < uniqs.Length; i++)
+    {
+      do
+      {
+        uniq = new Random().Next(min, max + 1);
+        entry = Array.IndexOf(uniqs, uniq);
+      }
+      while (entry != -1);
+      uniqs[i] = uniq;
+    }
+    int u = 0;
+    for (int i = 0; i < array.GetLength(0); i++)
+    {
+      for (int j = 0; j < array.GetLength(1); j++)
+      {
+        for (int q = 0; q < array.GetLength(2); q++)
+        {
+          array[i, j, q] = uniqs[u];
+          u++;
+        }
+      }
+    }
+  }
+  public static int CountOfPossibleUniqValue(int min, int max, int step = 1)
+  {
+    return (max - min + 1) / step;
+  }
+  public static int CountOfPossibleUniqValue(double min, double max, double step = 0.1)
+  {
+    return Convert.ToInt32((max - min + 1) / step);
+  }
+  public static int MaxArraySizeByCountOfPossibleValues(int rank, int countValues)
+  {
+    double root = 1.0 / rank;
+    return Convert.ToInt32(Math.Pow(Convert.ToDouble(countValues), root));
+  }
   //Сумма элементов массива в зависимости от знака числа (+/-)
   public static double ArrayItemSummByValuePositive(int[] arr, bool positive = true)//true - только положительные,false - только отрицательные
   {
@@ -352,6 +425,44 @@ public static class ArrayMethod
     }
     return false;
   }
+  public static void ArraySortingByRowsOrColumns(int[,] array, bool ascending = true, bool row = true, int from = 0, int to = 0)
+  {
+    for (int i = from; i <= to; i++)
+    {
+      SortingSingleRowOrColumn(array, i, ascending, row);
+    }
+  }
+  private static void SortingSingleRowOrColumn(int[,] array, int index, bool ascending = true, bool row = true)
+  {
+    if (row)
+    {
+      int[] tmpArray = new int[array.GetLength(1)];
+      for (int i = 0; i < tmpArray.Length; i++)
+      {
+        tmpArray[i] = array[index, i];
+      }
+      Array.Sort(tmpArray);
+      if (!ascending) Array.Reverse(tmpArray);
+      for (int i = 0; i < tmpArray.Length; i++)
+      {
+        array[index, i] = tmpArray[i];
+      }
+    }
+    else
+    {
+      int[] tmpArray = new int[array.GetLength(0)];
+      for (int i = 0; i < tmpArray.Length; i++)
+      {
+        tmpArray[i] = array[i, index];
+      }
+      Array.Sort(tmpArray);
+      if (!ascending) Array.Reverse(tmpArray);
+      for (int i = 0; i < tmpArray.Length; i++)
+      {
+        array[i, index] = tmpArray[i];
+      }
+    }
+  }
   //Вычисление среднего арифметического по строкам/столбцам двумерного массива
   public static double[,] CalculateAverageOfArrayItems(int[,] arr, bool row = true)
   {
@@ -384,6 +495,31 @@ public static class ArrayMethod
       }
     }
     return avgArr;
+  }
+  public static int[,] BuildPascalsTriangle(int row)
+  {
+    int[,] triangle = new int[row, row];
+    for (int i = 0; i < row; i++)
+    {
+      triangle[i, 0] = 1;
+      triangle[i, i] = 1;
+    }
+
+    if (row > 3)
+    {
+      int newRow = 0;
+      int newColumn = 0;
+      for (int i = 1; i < row - 1; i++)//строки треугольника
+      {
+        for (int j = 0; j < i; j++)//столбцы треугольника
+        {
+          newRow = i + 1;
+          newColumn = j + 1;
+          triangle[newRow, newColumn] = triangle[i, j] + triangle[i, newColumn];
+        }
+      }
+    }
+    return triangle;
   }
   //Формирование строки из значений массива
   public static string ArrayAsString(int[] arr, string separator = ", ") => string.Join(separator, arr);
@@ -420,7 +556,7 @@ public static class ArrayMethod
   }
   public static void PrintTabularView(int[,] arr)
   {
-    int maxLen = GetMaxLenItemInArray(arr) + 2;
+    int minLen = GetMaxLenItemInArray(arr) + 2;
     int padLeft = 0;
     string padIn = string.Empty;
     string padOut = " ";
@@ -431,7 +567,7 @@ public static class ArrayMethod
       for (int j = 0; j < arr.GetLength(1); j++)
       {
         padIn = string.Empty;
-        padLeft = maxLen - Convert.ToString(arr[i, j]).Length - 1;
+        padLeft = minLen - Convert.ToString(arr[i, j]).Length - 1;
         padIn = padIn.PadLeft(padLeft);
         output[i, j] = padIn + Convert.ToString(arr[i, j]) + padOut;
       }
@@ -448,7 +584,7 @@ public static class ArrayMethod
   }
   public static void PrintTabularView(double[,] arr)
   {
-    int maxLen = GetMaxLenItemInArray(arr) + 2;
+    int minLen = GetMaxLenItemInArray(arr) + 2;
     int padLeft = 0;
     string padIn = string.Empty;
     string padOut = " ";
@@ -459,7 +595,7 @@ public static class ArrayMethod
       for (int j = 0; j < arr.GetLength(1); j++)
       {
         padIn = string.Empty;
-        padLeft = maxLen - Convert.ToString(arr[i, j]).Length - 1;
+        padLeft = minLen - Convert.ToString(arr[i, j]).Length - 1;
         padIn = padIn.PadLeft(padLeft);
         output[i, j] = padIn + Convert.ToString(arr[i, j]) + padOut;
       }
@@ -474,10 +610,28 @@ public static class ArrayMethod
       tmpRow = string.Empty;
     }
   }
+  public static void PrintTabularView(int[,,] arr, bool withindex = true)
+  {
+    int minLen = GetMaxLenItemInArray(arr) + 2;
+    string output = string.Empty;
+    for (int q = 0; q < arr.GetLength(2); q++)
+    {
+      for (int i = 0; i < arr.GetLength(0); i++)
+      {
+        output = string.Empty;
+        for (int j = 0; j < arr.GetLength(1); j++)
+        {
+          output = $"{output}{arr[i, j, q],5}";
+          if (withindex) output = $"{output}" + $"({i},{j},{q}) ";
+        }
+        Console.WriteLine(output);
+      }
+    }
+  }
   private static int GetMaxLenItemInArray(int[,] arr)
   {
-    int minValue = arr[0, 0];
     int maxValue = arr[0, 0];
+    int minValue = arr[0, 0];
     for (int i = 0; i < arr.GetLength(0); i++)
     {
       for (int j = 0; j < arr.GetLength(1); j++)
@@ -490,10 +644,30 @@ public static class ArrayMethod
     if (Convert.ToString(minValue).Length > maxLen) maxLen = Convert.ToString(minValue).Length + 1;
     return maxLen;
   }
+  private static int GetMaxLenItemInArray(int[,,] arr)
+  {
+    int maxValue = arr[0, 0, 0];
+    int minValue = arr[0, 0, 0];
+    for (int i = 0; i < arr.GetLength(0); i++)
+    {
+      for (int j = 0; j < arr.GetLength(1); j++)
+      {
+        for (int q = 0; q < arr.GetLength(2); q++)
+        {
+          if (arr[i, j, q] > maxValue) maxValue = arr[i, j, q];
+          if (arr[i, j, q] < minValue) minValue = arr[i, j, q];
+        }
+
+      }
+    }
+    int maxLen = Convert.ToString(maxValue).Length + 1;
+    if (Convert.ToString(minValue).Length > maxLen) maxLen = Convert.ToString(minValue).Length + 1;
+    return maxLen;
+  }
   private static int GetMaxLenItemInArray(double[,] arr)
   {
-    double minValue = arr[0, 0];
     double maxValue = arr[0, 0];
+    double minValue = arr[0, 0];
     for (int i = 0; i < arr.GetLength(0); i++)
     {
       for (int j = 0; j < arr.GetLength(1); j++)
@@ -555,13 +729,46 @@ public static class ArrayMethod
     }
     return correct;
   }
-
+  public static int GetArrayRowOrColumnIndexByMinSumm(int[,] array, bool row = true, bool print = true)
+  {
+    int index = 0;
+    long minSumm = 0;
+    long tmpSumm = 0;
+    if (row)
+    {
+      for (int i = 0; i < array.GetLength(0); i++)
+      {
+        tmpSumm = 0;
+        for (int j = 0; j < array.GetLength(1); j++)
+        {
+          tmpSumm += array[i, j];
+        }
+        if (i == 0) minSumm = tmpSumm;
+        if (tmpSumm < minSumm) index = i;
+        if (print) Console.WriteLine($"Строка {i} сумма элементов {tmpSumm}");
+      }
+    }
+    else
+    {
+      for (int i = 0; i < array.GetLength(1); i++)
+      {
+        tmpSumm = 0;
+        for (int j = 0; j < array.GetLength(0); j++)
+        {
+          tmpSumm += array[i, j];
+        }
+        if (i == 0) minSumm = tmpSumm;
+        if (tmpSumm < minSumm) index = i;
+        if (print) Console.WriteLine($"Столбец {i} сумма элементов {tmpSumm}");
+      }
+    }
+    return index;
+  }
 }
 
 //Математические функции
 public class MathMethod
 {
-
   //Возведение числа в степень
   public static double NumberToPower(double number, int power)
   {
@@ -706,6 +913,41 @@ public class MathMethod
     while (!gooduser);
     value = lNum;
   }
+  public static void ShowNaturalNumbersInTheRange(int number)
+  {
+    Console.Write($"{number}");
+    number--;
+    if (number > 0)
+    {
+      Console.Write(", ");
+      ShowNaturalNumbersInTheRange(number);
+    }
+  }
+  public static int GetSummNaturalNumbersInTheRange(int leftNumber, int rightNumber, int summ)
+  {
+    if (rightNumber >= leftNumber)
+    {
+    summ=summ+rightNumber;
+    rightNumber--;
+    return GetSummNaturalNumbersInTheRange(leftNumber, rightNumber, summ);
+    }
+    return summ;
+  }
+   public static long Accerman(long m, long n)
+   {
+    try
+    {
+    if (m==0) return n+1;
+    if(m>0 && n==0) return Accerman(m-1,1);
+    if(m>0 && n>0) return Accerman(m-1,Accerman(m,n-1));
+    else return 1;
+    }
+    catch
+    {
+      Console.WriteLine($"Переполнение стека при m={m}, n={n}");
+      return 0;
+    }
+   }
 }
 
 public class FileMethod
