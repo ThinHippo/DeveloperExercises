@@ -310,7 +310,7 @@ public static class ArrayMethod
         uniq = new Random().Next(min, max + 1);
         entry = Array.IndexOf(uniqs, uniq);
       }
-      while (entry != -1);
+      while (uniqs.Contains(uniq));
       uniqs[i] = uniq;
     }
     int u = 0;

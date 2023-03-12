@@ -253,13 +253,13 @@ public class TaskStarter
     int maxArrayValue = 99;
     int rank = 3;
     int countValues = CountOfPossibleUniqValue(minArrayValue, maxArrayValue);
-    Console.WriteLine($"Количество значений {countValues}");
+    Console.WriteLine($"Количество значений: {countValues}");
     int maxSize = MaxArraySizeByCountOfPossibleValues(rank, countValues);
-    Console.WriteLine($"Максимальный размер {maxSize}");
+    Console.WriteLine($"Максимальный размер массива: {maxSize}");
     if (maxSize > 0)
     {
       int minSize = new Random().Next(1, maxSize + 1);
-      Console.WriteLine($"Минимальный размер {minSize}");
+      Console.WriteLine($"Минимальный размер массива: {minSize}");
       CreateArray(out int[,,] testArray, minSize, maxSize);
       FillArrayWithUniqValues(testArray, minArrayValue, maxArrayValue);
       PrintTabularView(testArray);
