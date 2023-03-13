@@ -298,33 +298,36 @@ public static class ArrayMethod
       }
     }
   }
-  public static void FillArrayWithUniqValues(int[,,] array, int min, int max)
+  public static void FillArrayWithUniqValues(int[,,] array, int min, int max, int step = 1)
   {
-    int uniq = 0;
-    int[] uniqs = new int[array.GetLength(0) * array.GetLength(1) * array.GetLength(2)];
-    int entry = 0;
-    for (int i = 0; i < uniqs.Length; i++)
-    {
-      do
-      {
-        uniq = new Random().Next(min, max + 1);
-        entry = Array.IndexOf(uniqs, uniq);
-      }
-      while (uniqs.Contains(uniq));
-      uniqs[i] = uniq;
-    }
-    int u = 0;
+    int[] values = GetUniqValues(min, max, step);
+    int v = 0;
     for (int i = 0; i < array.GetLength(0); i++)
     {
       for (int j = 0; j < array.GetLength(1); j++)
       {
         for (int q = 0; q < array.GetLength(2); q++)
         {
-          array[i, j, q] = uniqs[u];
-          u++;
+          array[i, j, q] = values[v];
+          v++;
         }
       }
     }
+  }
+  public static int[] GetUniqValues(int min, int max, int step = 1)
+  {
+    int[] values = new int[(max - min + 1) / step];
+    for (int i = 0; i < values.Length; i++)
+    {
+      values[i] = min;
+      min = min + step;
+    }
+    for (int i = 0; i < values.Length - 1; i++)
+    {
+      int position = new Random().Next(i + 1, values.Length);
+      (values[i], values[position]) = (values[position], values[i]);
+    }
+    return values;
   }
   public static int CountOfPossibleUniqValue(int min, int max, int step = 1)
   {
@@ -927,27 +930,27 @@ public class MathMethod
   {
     if (rightNumber >= leftNumber)
     {
-    summ=summ+rightNumber;
-    rightNumber--;
-    return GetSummNaturalNumbersInTheRange(leftNumber, rightNumber, summ);
+      summ = summ + rightNumber;
+      rightNumber--;
+      return GetSummNaturalNumbersInTheRange(leftNumber, rightNumber, summ);
     }
     return summ;
   }
-   public static long Accerman(long m, long n)
-   {
-    try
+  public static int Accerman(int m, int n)
+  {
+    while (m != 0)
     {
-    if (m==0) return n+1;
-    if(m>0 && n==0) return Accerman(m-1,1);
-    if(m>0 && n>0) return Accerman(m-1,Accerman(m,n-1));
-    else return 1;
+      if (n == 0)
+      {
+        return Accerman(m - 1, 1);
+      }
+      else
+      {
+        return Accerman(m - 1, Accerman(m, n - 1));
+              }
     }
-    catch
-    {
-      Console.WriteLine($"Переполнение стека при m={m}, n={n}");
-      return 0;
-    }
-   }
+    return n + 1;
+  }
 }
 
 public class FileMethod

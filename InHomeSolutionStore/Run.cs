@@ -253,13 +253,10 @@ public class TaskStarter
     int maxArrayValue = 99;
     int rank = 3;
     int countValues = CountOfPossibleUniqValue(minArrayValue, maxArrayValue);
-    Console.WriteLine($"Количество значений: {countValues}");
     int maxSize = MaxArraySizeByCountOfPossibleValues(rank, countValues);
-    Console.WriteLine($"Максимальный размер массива: {maxSize}");
     if (maxSize > 0)
     {
       int minSize = new Random().Next(1, maxSize + 1);
-      Console.WriteLine($"Минимальный размер массива: {minSize}");
       CreateArray(out int[,,] testArray, minSize, maxSize);
       FillArrayWithUniqValues(testArray, minArrayValue, maxArrayValue);
       PrintTabularView(testArray);
@@ -295,14 +292,13 @@ public class TaskStarter
   private static string Task68()
   {
     Console.WriteLine("Задача 68: Напишите программу вычисления функции Аккермана с помощью рекурсии. Даны два неотрицательных числа M и N.");
-    UserEntersNumber(out long m, "Введите натуральное (целое положительное) число M: ");//меньшее
-    UserEntersNumber(out long n, "Введите натуральное (целое положительное) число N: ");//большее
-    long result = 0;
-    Console.WriteLine($"Для наглядности возрастания функции значения будут рассчитаны для M={m} N=[0,{n}]");
-    for(long i=0;i<=n;i++)
+    UserEntersNumber(out int m, "Введите натуральное (целое положительное) число M: ");//меньшее
+    UserEntersNumber(out int n, "Введите натуральное (целое положительное) число N: ");//большее
+    Console.WriteLine($"Функция рассчитывается в определении Рожи Петер.\n"+
+    $"Для наглядности возрастания функции значения будут рассчитаны для N от 0 до {n} при M={m}.");
+    for(int i=0;i<=n;i++)
     {
-      result = Accerman(m, i);
-      Console.WriteLine($"M={m}; N={i} A(m,n)=" + result);
+      Console.WriteLine($"M={m}; N={i} A(M,N)=" + Accerman(m, i));
     }
     return "Выполнение задачи 68 завершено.";
   }
