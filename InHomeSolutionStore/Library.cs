@@ -619,6 +619,7 @@ public static class ArrayMethod
     string output = string.Empty;
     for (int q = 0; q < arr.GetLength(2); q++)
     {
+      Console.WriteLine($"{q+1}-й слой массива:");
       for (int i = 0; i < arr.GetLength(0); i++)
       {
         output = string.Empty;
@@ -747,7 +748,11 @@ public static class ArrayMethod
           tmpSumm += array[i, j];
         }
         if (i == 0) minSumm = tmpSumm;
-        if (tmpSumm < minSumm) index = i;
+        if (tmpSumm < minSumm)
+        {
+         minSumm=tmpSumm;
+         index = i; 
+        } 
         if (print) Console.WriteLine($"Строка {i} сумма элементов {tmpSumm}");
       }
     }
